@@ -12,8 +12,9 @@ const operations = {
     divide: (a, b) => a / b
 };
 
-const keyboardValues = [27, 8, 9, 191, 55, 56, 57, 88, 52, 53, 54, 189, 49, 50, 51,
-    187, 48, 190, 13
+const keyboardValues = [
+    "Escape", "Backspace", "`", "/", "7", "8", "9", "*", "4", "5", "6", "-",
+    "1", "2", "3", "+", "0", ".", "Enter"
 ];
 
 const init = () => {
@@ -41,7 +42,7 @@ const display = (str, type) => {
         // Limit of display is 14 digits
         if (type = 'total') {
             nDisplay.innerHTML = Number(str).toPrecision(10).toString();
-        } else if (type = 'input') { 
+        } else if (type = 'input') {
             // We trunk the input it and add '...' in front
             nDisplay.innerHTML = '...' + str.slice(str.length - 14, str.length)
         }
@@ -210,10 +211,10 @@ const toggleDecimal = () => {
 }
 
 const getKeyboardInput = (e) => {
-    if (keyboardValues.includes(e.keyCode)) {
-        const node = document.querySelector(`button[data-key='${e.keyCode}']`);
-        console.log(node.innerHTML)
-        node.click();
+    console.log(e.key);
+    if (keyboardValues.includes(e.key)) {
+    const node = document.querySelector(`button[value='${e.key}']`);
+    node.click();
     }
 }
 
