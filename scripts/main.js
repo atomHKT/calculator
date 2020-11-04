@@ -12,12 +12,13 @@ const operations = {
     divide: (a, b) => a / b
 };
 
-const keyboardValues = [27, 8, 9 , 191, 55, 56, 57, 88, 52, 53, 54, 189, 49, 50, 51,
-    187, 48, 190, 13];
+const keyboardValues = [27, 8, 9, 191, 55, 56, 57, 88, 52, 53, 54, 189, 49, 50, 51,
+    187, 48, 190, 13
+];
 
 const init = () => {
     strTotal = '', strInput = '', strOperator = '';
-    displayInput(strInput);
+    display(strInput, 'input');
     clearOpSignDec();
 }
 
@@ -30,36 +31,56 @@ const checkSign = (str) => {
     console.log("checksign", "input", strInput, "total", strTotal, "operator", strOperator);
 }
 
-const displayTotal = strTotal => {
-    checkSign(strTotal);
-    if (strTotal === '') {
+const display = (str, type) => {
+    checkSign(str);
+    if (str === '') {
         nDisplay.innerHTML = '0';
-    } else if (strTotal === '-') {
+    } else if (str === '-') {
         nDisplay.innerHTML = '-0';
-    } else if (strTotal.length > 14) {
+    } else if (str.length > 14) {
         // Limit of display is 14 digits
-        nDisplay.innerHTML = Number(strTotal).toPrecision(10).toString();
+        if (type = 'total') {
+            nDisplay.innerHTML = Number(str).toPrecision(10).toString();
+        } else if (type = 'input') { 
+            // We trunk the input it and add '...' in front
+            nDisplay.innerHTML = '...' + str.slice(str.length - 14, str.length)
+        }
     } else {
-        nDisplay.innerHTML = strTotal;
+        nDisplay.innerHTML = str;
     }
     console.log("dspTotal", "input", strInput, "total", strTotal, "operator", strOperator);
 }
 
-const displayInput = strInput => {
-    checkSign(strInput);
-    if (strInput === '') {
-        nDisplay.innerHTML = '0';
-    } else if (strInput === '-') {
-        nDisplay.innerHTML = '-0';
-    } else if (strInput.length > 14) {
-        // Limit of display is 14 digits
-        // For greater length trunk the input it and add '...' in front
-        nDisplay.innerHTML = '...' + strInput.slice(strInput.length - 14, strInput.length)
-    } else {
-        nDisplay.innerHTML = strInput;
-    }
-    console.log("dspInput", "input", strInput, "total", strTotal, "operator", strOperator);
-}
+// const displayTotal = strTotal => {
+//     checkSign(strTotal);
+//     if (strTotal === '') {
+//         nDisplay.innerHTML = '0';
+//     } else if (strTotal === '-') {
+//         nDisplay.innerHTML = '-0';
+//     } else if (strTotal.length > 14) {
+//         // Limit of display is 14 digits
+//         nDisplay.innerHTML = Number(strTotal).toPrecision(10).toString();
+//     } else {
+//         nDisplay.innerHTML = strTotal;
+//     }
+//     console.log("dspTotal", "input", strInput, "total", strTotal, "operator", strOperator);
+// }
+
+// const displayInput = strInput => {
+//     checkSign(strInput);
+//     if (strInput === '') {
+//         nDisplay.innerHTML = '0';
+//     } else if (strInput === '-') {
+//         nDisplay.innerHTML = '-0';
+//     } else if (strInput.length > 14) {
+//         // Limit of display is 14 digits
+//         // For greater length trunk the input it and add '...' in front
+//         nDisplay.innerHTML = '...' + strInput.slice(strInput.length - 14, strInput.length)
+//     } else {
+//         nDisplay.innerHTML = strInput;
+//     }
+//     console.log("dspInput", "input", strInput, "total", strTotal, "operator", strOperator);
+// }
 
 const clearOpActive = () => {
     nOperator.forEach(op => {
@@ -97,14 +118,14 @@ const backspace = () => {
             nDecimal.classList.toggle('active');
         }
         strInput = strInput.slice(0, -1);
-        displayInput(strInput);
+        display(strInput, 'input');
     } else if (strTotal !== '') {
         if (strTotal.charAt(strTotal.length - 1) === '.') {
             // If the last caracter is the decimal, reomve the .active class
             nDecimal.classList.toggle('active');
         }
         strTotal = strTotal.slice(0, -1);
-        displayTotal(strTotal);
+        display(strTotal, 'total');
     }
 }
 
@@ -116,7 +137,7 @@ const toggleSign = () => {
         } else {
             strTotal = '-' + strTotal;
         }
-        displayTotal(strTotal);
+        display(strTotal, 'total');
     } else {
         // In this case we toggle sign on strInput
         if (strInput.charAt(0) === '-') {
@@ -124,7 +145,7 @@ const toggleSign = () => {
         } else {
             strInput = '-' + strInput;
         }
-        displayInput(strInput);
+        display(strInput, 'input');
     }
 }
 
@@ -136,19 +157,19 @@ const computeTotal = () => {
     }
     strInput = '';
     strOperator = '';
-    displayTotal(strTotal);
+    display(strTotal, 'total');
     clearOpSignDec();
     console.log("computeTotal", "input", strInput, "total", strTotal, "operator", strOperator);
 }
 
 const getFigure = (e) => {
     if (strInput === '') {
-        strInput = e.target.textContent;
+        strInput = e.target.value;
     } else {
-        strInput += e.target.textContent;
+        strInput += e.target.value;
     }
     clearOpActive();
-    displayInput(strInput);
+    display(strInput, 'input');
 
 }
 
@@ -185,12 +206,13 @@ const toggleDecimal = () => {
         strInput = strInput.slice(0, -1);
         nDecimal.classList.toggle('active');
     }
-    displayInput(strInput);
+    display(strInput, 'input');
 }
 
 const getKeyboardInput = (e) => {
     if (keyboardValues.includes(e.keyCode)) {
         const node = document.querySelector(`button[data-key='${e.keyCode}']`);
+        console.log(node.innerHTML)
         node.click();
     }
 }
