@@ -7,6 +7,8 @@
 	<meta name="description" content="This is my Calculator project (The Odin Project)">
 	<meta name="author" content="atom.hkt">
 	<title>Calculator</title>
+	<link rel="icon" type="image/svg+xml" href="./images/icons/calculator.svg?">
+	<link rel="alternate icon" type="image/png" href="./images/icons/calculator.png?">
 	<link href="styles/minireset.css" rel="stylesheet">
 	<link href="styles/main.css" rel="stylesheet">
 	<script src="scripts/main.js" defer></script>
@@ -15,6 +17,28 @@
 <body>
 	<div class="wrapper">
 		<section class="grid-container">
+			<div class="item display">
+				<div class="display-content"></div>
+			</div>
+			<button data-key="27" value="clear" class="item clear">C</button>
+			<button data-key="8" value="backspace" class="item backspace">&#8592;</button>
+			<button data-key="9" value="sign" class="item sign"><span class="positive">&plus;</span>&sol;<span class="negative">&minus;</span></button>
+			<button data-key="191" value="divide" id="divide" class="item operator divide">&divide;</button>
+			<button data-key="55" value="7" class="item figure">7</button>
+			<button data-key="56" value="8" class="item figure">8</button>
+			<button data-key="57" value="9" class="item figure">9</button>
+			<button data-key="88" value="multiply" id="multiply" class="item operator muliply">&times;</button>
+			<button data-key="52" value="4" class="item figure">4</button>
+			<button data-key="53" value="5" class="item figure">5</button>
+			<button data-key="54" value="6" class="item figure">6</button>
+			<button data-key="189" value="substract" id="substract" class="item operator substract">&minus;</button>
+			<button data-key="49" value="1" class="item figure">1</button>
+			<button data-key="50" value="2" class="item figure">2</button>
+			<button data-key="51" value="3" class="item figure">3</button>
+			<button data-key="187" value="add" id="add" class="item operator add">&plus;</button>
+			<button data-key="48" value="0" class="item figure">0</button>
+			<button data-key="190" value="." class="item decimal">.</button>
+			<button data-key="13" value="=" id="equal" class="item equal">&equals;</button>
 		</section>
 	</div>
 </body>
