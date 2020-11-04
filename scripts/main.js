@@ -49,7 +49,6 @@ const display = (str, type) => {
     } else {
         nDisplay.innerHTML = str;
     }
-    console.log("input", strInput, "total", strTotal, "operator", strOperator)
 }
 
 const clearOpActive = () => {
