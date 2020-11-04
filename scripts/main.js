@@ -118,8 +118,8 @@ const computeTotal = () => {
     }
     strInput = '';
     strOperator = '';
-    if (strTotal === 'Infinity') {
-        nDisplay.innerHTML = '!!!!!...ERROR...!!!!!';
+    if ((strTotal === 'Infinity') || (strTotal === 'NaN')){
+        nDisplay.innerHTML = 'Error';
         strTotal = '';
     } else {
         display(strTotal, 'total');
