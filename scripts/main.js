@@ -1,10 +1,3 @@
-// handle ERROR message
-// use data.value instead of innerHTML
-// play sound
-// on click : transform
-// merge display input / total
-
-
 const operations = {
     add: (a, b) => a + b,
     substract: (a, b) => a - b,
@@ -29,7 +22,6 @@ const checkSign = (str) => {
         nPositive.classList.toggle('active');
         nNegative.classList.toggle('active');
     }
-    console.log("checksign", "input", strInput, "total", strTotal, "operator", strOperator);
 }
 
 const display = (str, type) => {
@@ -40,48 +32,16 @@ const display = (str, type) => {
         nDisplay.innerHTML = '-0';
     } else if (str.length > 14) {
         // Limit of display is 14 digits
-        if (type = 'total') {
+        if (type === 'total') {
             nDisplay.innerHTML = Number(str).toPrecision(10).toString();
-        } else if (type = 'input') {
+        } else if (type === 'input') {
             // We trunk the input it and add '...' in front
             nDisplay.innerHTML = '...' + str.slice(str.length - 14, str.length)
         }
     } else {
         nDisplay.innerHTML = str;
     }
-    console.log("dspTotal", "input", strInput, "total", strTotal, "operator", strOperator);
 }
-
-// const displayTotal = strTotal => {
-//     checkSign(strTotal);
-//     if (strTotal === '') {
-//         nDisplay.innerHTML = '0';
-//     } else if (strTotal === '-') {
-//         nDisplay.innerHTML = '-0';
-//     } else if (strTotal.length > 14) {
-//         // Limit of display is 14 digits
-//         nDisplay.innerHTML = Number(strTotal).toPrecision(10).toString();
-//     } else {
-//         nDisplay.innerHTML = strTotal;
-//     }
-//     console.log("dspTotal", "input", strInput, "total", strTotal, "operator", strOperator);
-// }
-
-// const displayInput = strInput => {
-//     checkSign(strInput);
-//     if (strInput === '') {
-//         nDisplay.innerHTML = '0';
-//     } else if (strInput === '-') {
-//         nDisplay.innerHTML = '-0';
-//     } else if (strInput.length > 14) {
-//         // Limit of display is 14 digits
-//         // For greater length trunk the input it and add '...' in front
-//         nDisplay.innerHTML = '...' + strInput.slice(strInput.length - 14, strInput.length)
-//     } else {
-//         nDisplay.innerHTML = strInput;
-//     }
-//     console.log("dspInput", "input", strInput, "total", strTotal, "operator", strOperator);
-// }
 
 const clearOpActive = () => {
     nOperator.forEach(op => {
@@ -158,12 +118,19 @@ const computeTotal = () => {
     }
     strInput = '';
     strOperator = '';
-    display(strTotal, 'total');
+    if (strTotal === 'Infinity') {
+        nDisplay.innerHTML = '!!!!!...ERROR...!!!!!';
+        strTotal = '';
+    } else {
+        display(strTotal, 'total');
+    }
     clearOpSignDec();
-    console.log("computeTotal", "input", strInput, "total", strTotal, "operator", strOperator);
 }
 
 const getFigure = (e) => {
+    if ((strTotal !== '') && (strOperator === '')) {
+        strTotal = '';
+    }
     if (strInput === '') {
         strInput = e.target.value;
     } else {
@@ -171,7 +138,6 @@ const getFigure = (e) => {
     }
     clearOpActive();
     display(strInput, 'input');
-
 }
 
 const getOperator = (e) => {
@@ -189,7 +155,6 @@ const getOperator = (e) => {
             strInput = '';
         }
     }
-    console.log("getOperator", "input", strInput, "total", strTotal, "operator", strOperator);
 }
 
 const toggleDecimal = () => {
@@ -211,11 +176,21 @@ const toggleDecimal = () => {
 }
 
 const getKeyboardInput = (e) => {
-    console.log(e.key);
     if (keyboardValues.includes(e.key)) {
-    const node = document.querySelector(`button[value='${e.key}']`);
-    node.click();
+        const node = document.querySelector(`button[value='${e.key}']`);
+        node.click();
     }
+}
+
+function removeTransition(e) {
+    e.target.classList.remove('clicked');
+}
+
+function playSound(e) {
+    const audio = document.querySelector('audio');
+    e.target.classList.add('clicked');
+    audio.currentTime = 0;
+    audio.play();
 }
 
 const createEventHandlers = () => {
@@ -227,9 +202,12 @@ const createEventHandlers = () => {
     nDecimal.addEventListener('click', toggleDecimal);
     nEqual.addEventListener('click', computeTotal);
     window.addEventListener('keydown', getKeyboardInput);
+    nButtons.forEach(button => button.addEventListener('click', playSound));
+    nButtons.forEach(button => button.addEventListener('transitionend', removeTransition));
 }
 
 const nDisplay = document.querySelector(".display-content");
+const nButtons = document.querySelectorAll("button");
 const nClear = document.querySelector(".clear");
 const nBackspace = document.querySelector(".backspace");
 const nSign = document.querySelector(".sign");
