@@ -83,17 +83,9 @@ const clearOpSignDec = () => {
 
 const backspace = () => {
     if (strInput !== '') {
-        if (strInput.charAt(strInput.length - 1) === '.') {
-            // If the last caracter is the decimal, remove the .active class
-            nDecimal.classList.toggle('active');
-        }
         strInput = strInput.slice(0, -1);
         display(strInput, 'input');
     } else if (strTotal !== '') {
-        if (strTotal.charAt(strTotal.length - 1) === '.') {
-            // If the last caracter is the decimal, remove the .active class
-            nDecimal.classList.toggle('active');
-        }
         strTotal = strTotal.slice(0, -1);
         display(strTotal, 'total');
     }
@@ -131,7 +123,6 @@ const addLeadZero = (str) => {
 
 const computeTotal = () => {
     if ((strOperator !== '') && (strInput !== '')) {
-        console.log(strTotal, addLeadZero(strTotal), "totot", strInput, addLeadZero(strInput))
         strTotal = operations[strOperator](Number(addLeadZero(strTotal)), Number(addLeadZero(strInput))).toString();
     } else if (strInput !== '') {
         strTotal = strInput;
