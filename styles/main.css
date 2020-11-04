@@ -80,6 +80,11 @@ button:focus {
 	outline: none;
 }
 
+/* to avoid buttons sub elements to be clickable */
+button > * {
+	pointer-events: none;
+  }
+
 .item.operator {
 	background-color: rgb(255, 149, 0, 1);
 	border: 2px solid rgba(0, 0, 0, 0.5);

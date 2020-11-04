@@ -24,8 +24,16 @@ const checkSign = (str) => {
     }
 }
 
+const checkDecimal = str => {
+    if ((str.includes('.') && !nDecimal.classList.contains('active')) ||
+        (!str.includes('.') && nDecimal.classList.contains('active'))) {
+        nDecimal.classList.toggle('active');
+    }
+}
+
 const display = (str, type) => {
     checkSign(str);
+    checkDecimal(str);
     if (str === '') {
         nDisplay.innerHTML = '0';
     } else if (str === '-') {
@@ -41,6 +49,7 @@ const display = (str, type) => {
     } else {
         nDisplay.innerHTML = str;
     }
+    console.log("input", strInput, "total", strTotal, "operator", strOperator)
 }
 
 const clearOpActive = () => {
@@ -75,14 +84,14 @@ const clearOpSignDec = () => {
 const backspace = () => {
     if (strInput !== '') {
         if (strInput.charAt(strInput.length - 1) === '.') {
-            // If the last caracter is the decimal, reomve the .active class
+            // If the last caracter is the decimal, remove the .active class
             nDecimal.classList.toggle('active');
         }
         strInput = strInput.slice(0, -1);
         display(strInput, 'input');
     } else if (strTotal !== '') {
         if (strTotal.charAt(strTotal.length - 1) === '.') {
-            // If the last caracter is the decimal, reomve the .active class
+            // If the last caracter is the decimal, remove the .active class
             nDecimal.classList.toggle('active');
         }
         strTotal = strTotal.slice(0, -1);
@@ -110,15 +119,26 @@ const toggleSign = () => {
     }
 }
 
+const addLeadZero = (str) => {
+    if (str === '') {
+        return '0';
+    } else if (str === '-') {
+        return '-0';
+    } else {
+        return str;
+    }
+}
+
 const computeTotal = () => {
     if ((strOperator !== '') && (strInput !== '')) {
-        strTotal = operations[strOperator](Number(strTotal), Number(strInput)).toString();
+        console.log(strTotal, addLeadZero(strTotal), "totot", strInput, addLeadZero(strInput))
+        strTotal = operations[strOperator](Number(addLeadZero(strTotal)), Number(addLeadZero(strInput))).toString();
     } else if (strInput !== '') {
         strTotal = strInput;
     }
     strInput = '';
     strOperator = '';
-    if ((strTotal === 'Infinity') || (strTotal === 'NaN')){
+    if ((strTotal === 'Infinity') || (strTotal === 'NaN')) {
         nDisplay.innerHTML = 'Error';
         strTotal = '';
     } else {
@@ -162,6 +182,8 @@ const toggleDecimal = () => {
         // If strInput does not have decimal yet
         if (strInput === '') {
             strInput = '0.'
+        } else if (strInput === '-') {
+            strInput = '-0.'
         } else {
             strInput += '.';
         }
